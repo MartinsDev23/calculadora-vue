@@ -1,47 +1,57 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { reactive } from 'vue';
+
+
+  const estado = reactive ({
+    valores: {
+      valor1: 0,
+      valor2: 0,
+    },
+    operacao: 'soma',
+    resultado: 0
+  })
+
+  const calculaResultado = () => {
+    const valor1 = Number(estado.valores.valor1);
+    const valor2 = Number(estado.valores.valor2);
+
+    switch (estado.operacao) {
+      case 'soma':
+        estado.resultado = valor1 + valor2;
+        break;
+      case 'subtrai':
+        estado.resultado = valor1 - valor2;
+        break;
+      case 'multiplica':
+        estado.resultado = valor1 * valor2;
+        break;
+      case 'divide':
+        estado.resultado = valor1 / valor2;
+        break;
+    }  
+  }
+
+
+  
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <div class="container col-md-4 text-center mt-5">
+    <h1>Calculadora Aritmética</h1>
+    <form class="form-control mt-3">
+        <input @keyup="evento => estado.valores.valor1 = evento.target.value" class="form-control mt-3 mb-3" type="number" placeholder="Digite um número">
+        <select @change="evento => {  estado.operacao = evento.target.value; calculaResultado() }"  class="col-md-12">
+            <option value="soma">Somar</option>
+            <option value="subtrai">Subtrair</option>
+            <option value="multiplica">Multiplicar</option>
+            <option value="divide">Dividir</option>
+        </select>
+        <input @keyup="evento => estado.valores.valor2 = evento.target.value" class="form-control mb-3 mt-3" type="numer" placeholder="Digite um segundo número">
+        <span class="form-control">Resultado: {{ estado.resultado }}</span>
+    </form>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
